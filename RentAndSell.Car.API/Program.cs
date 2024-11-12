@@ -1,3 +1,4 @@
+using RentAndSell.Car.API;
 using System.Text;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
@@ -7,9 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
+builder.Services.AddControllers(); //MVC de addcontrollerswithviews yapýyoruz.
+
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+app.MapControllers(); 
 
 //GET | POST | PUT | PATCH | DELETE | OPTIONS
 
@@ -77,20 +82,22 @@ app.UseHttpsRedirection();
 //}); 
 #endregion
 
+#region bununda illaki bi adý vardýr ama hatýrlamýyorum
 app.Map("/", async (context) =>
 {
-    if (context.Request.Method == "OPTIONS")
-    {
-        context.Response.Headers.Accept = "Accept Info : All Browsers";
-        context.Response.Headers.AcceptCharset = "UTF-8";
-        context.Response.Headers.AcceptLanguage = "tr-TR";
-        context.Response.Headers.AccessControlAllowOrigin = "*";
-        context.Response.Headers.AccessControlAllowMethods = "GET,POST,PUT";
-    }
+if (context.Request.Method == "OPTIONS")
+{
+context.Response.Headers.Accept = "Accept Info : All Browsers";
+context.Response.Headers.AcceptCharset = "UTF-8";
+context.Response.Headers.AcceptLanguage = "tr-TR";
+context.Response.Headers.AccessControlAllowOrigin = "*";
+context.Response.Headers.AccessControlAllowMethods = "GET,POST,PUT";
+}
     //return "<b>Text Plain</b>";
 
     //context.Response.StatusCode = 404;
-});
+}); 
+#endregion
 
 #region Content-Type örnekler
 
@@ -137,56 +144,55 @@ await context.Response.WriteAsync(cssContent);
 
 }); 
 #endregion
-
 #region Car CRUD Operations
 
-List<Car> cars = new List<Car>();
+//List<Car> cars = new List<Car>();
 
 
-//GET    https://localhost:7168/Cars         => AllCars
+////GET    https://localhost:7168/Cars         => AllCars
 
-app.MapGet("/Cars", () =>
-{
-    return cars;
-});
+//app.MapGet("/Cars", () =>
+//{
+//    return cars;
+//});
 
-//GET    https://localhost:7168/Cars/{id}    => Car With Id
+////GET    https://localhost:7168/Cars/{id}    => Car With Id
 
-app.MapGet("/Cars/{id}", (int id) =>
-{
-    return cars.Where(c => c.Id == id).SingleOrDefault();
-});
+//app.MapGet("/Cars/{id}", (int id) =>
+//{
+//    return cars.Where(c => c.Id == id).SingleOrDefault();
+//});
 
-//POST   https://localhost:7168/Cars         => jsonData Model ile New Car
+////POST   https://localhost:7168/Cars         => jsonData Model ile New Car
 
-app.MapPost("/Cars", (Car car) =>
-{
-    //int lastId = cars.MaxBy(c => c.Id).Id;
-    //car.Id = lastId + 1;
+//app.MapPost("/Cars", (Car car) =>
+//{
+//    //int lastId = cars.MaxBy(c => c.Id).Id;
+//    //car.Id = lastId + 1;
 
-    cars.Add(car);
-    return car;
-});
+//    cars.Add(car);
+//    return car;
+//});
 
-//PUT    https://localhost:7168/Cars/{id}    => jsonData Model ve Id ile Edit Car
+////PUT    https://localhost:7168/Cars/{id}    => jsonData Model ve Id ile Edit Car
 
-app.MapPut("/Cars/{id}", (int id, Car car) =>
-{
-    Car findOriginalCar = cars.Where(c => c.Id == id).SingleOrDefault();
-    int findOriginalIndex = cars.IndexOf(findOriginalCar);
+//app.MapPut("/Cars/{id}", (int id, Car car) =>
+//{
+//    Car findOriginalCar = cars.Where(c => c.Id == id).SingleOrDefault();
+//    int findOriginalIndex = cars.IndexOf(findOriginalCar);
 
-    cars[findOriginalIndex] = car;
-    return car;
-});
+//    cars[findOriginalIndex] = car;
+//    return car;
+//});
 
-//DELETE https://localhost:7168/Cars/{id}    => Car Id ile Delete Car 
+////DELETE https://localhost:7168/Cars/{id}    => Car Id ile Delete Car 
 
-app.MapDelete("/Cars/{id}", (int id) =>
-{
-    Car removedCar = cars.Where(c => c.Id == id).SingleOrDefault();
-    cars.Remove(removedCar);
-    return removedCar;
-});
+//app.MapDelete("/Cars/{id}", (int id) =>
+//{
+//    Car removedCar = cars.Where(c => c.Id == id).SingleOrDefault();
+//    cars.Remove(removedCar);
+//    return removedCar;
+//});
 
 #endregion
 
