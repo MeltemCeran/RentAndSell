@@ -1,3 +1,4 @@
+using System.Text;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -91,24 +92,51 @@ app.Map("/", async (context) =>
     //context.Response.StatusCode = 404;
 });
 
+#region Content-Type örnekler
+
 app.MapGet("/", async (context) =>
 {
-    if (context.Request.Headers.UserAgent.ToString().Contains("Postman"))
-        context.Response.StatusCode = 404;
-    else
-    {
-        string response = ("Herhangi bir þey <b>bu yazý bold</b>");
+if (context.Request.Headers.UserAgent.ToString().Contains("Postman"))
+context.Response.StatusCode = 404;
+else
+{
+string responseContent = ("Herhangi bir þey <b>bu yazý bold</b>");
 
-        context.Response.StatusCode = 200;
-        context.Response.ContentLength = response.Length;
-        context.Response.ContentType = "text/plain";
-    }
+context.Response.StatusCode = 200;
+context.Response.ContentLength = Encoding.UTF8.GetByteCount(responseContent); //normal Lengt alamayýz çünkü karakter setlerindeki boyutlandýrma farklý.
+context.Response.ContentType = "text/plain ; charset=utf-8"; //"text/html ; charset=utf-8";
 
+await context.Response.WriteAsync(responseContent);
+}
+}); 
+#endregion
 
-    //return "<b>Text Plain</b>";
+#region Burasý fiziksel css dosyasý istemediðimde bir baþka projenin cshtml sayfalarýna url linki vererek yaptýðým deðiþiklikler.
+app.MapGet("/{cssFileName}", async (HttpContext context, string cssFileName) =>
+{
+string cssContent = "";
 
-    //context.Response.StatusCode = 404;
-});
+switch (cssFileName)
+{
+case "user.css":
+    cssContent = @"p { color: red; font-size: 8px }";
+    break;
+case "main.css":
+    cssContent = @"p { color: blue; font-size: 24px }";
+    break;
+case "index.css":
+    cssContent = @"p { color: yellow; font-size: 48px }";
+    break;
+}
+
+context.Response.StatusCode = 200;
+context.Response.ContentLength = Encoding.UTF8.GetByteCount(cssContent);
+context.Response.ContentType = "text/css; charset=utf-8";
+
+await context.Response.WriteAsync(cssContent);
+
+}); 
+#endregion
 
 #region Car CRUD Operations
 
