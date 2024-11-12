@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using RentAndSell.Car.API;
+using RentAndSell.Car.API.Data.Context;
 using System.Text;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
@@ -6,9 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var app = builder.Build();
+builder.Services.AddDbContext<CarRentDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("CarRentDbCon"));
+});
 
 builder.Services.AddControllers(); //MVC de addcontrollerswithviews yapýyoruz.
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
@@ -83,66 +90,66 @@ app.MapControllers();
 #endregion
 
 #region bununda illaki bi adý vardýr ama hatýrlamýyorum
-app.Map("/", async (context) =>
-{
-if (context.Request.Method == "OPTIONS")
-{
-context.Response.Headers.Accept = "Accept Info : All Browsers";
-context.Response.Headers.AcceptCharset = "UTF-8";
-context.Response.Headers.AcceptLanguage = "tr-TR";
-context.Response.Headers.AccessControlAllowOrigin = "*";
-context.Response.Headers.AccessControlAllowMethods = "GET,POST,PUT";
-}
-    //return "<b>Text Plain</b>";
+//app.Map("/", async (context) =>
+//{
+//if (context.Request.Method == "OPTIONS")
+//{
+//context.Response.Headers.Accept = "Accept Info : All Browsers";
+//context.Response.Headers.AcceptCharset = "UTF-8";
+//context.Response.Headers.AcceptLanguage = "tr-TR";
+//context.Response.Headers.AccessControlAllowOrigin = "*";
+//context.Response.Headers.AccessControlAllowMethods = "GET,POST,PUT";
+//}
+//    //return "<b>Text Plain</b>";
 
-    //context.Response.StatusCode = 404;
-}); 
+//    //context.Response.StatusCode = 404;
+//}); 
 #endregion
 
 #region Content-Type örnekler
 
-app.MapGet("/", async (context) =>
-{
-if (context.Request.Headers.UserAgent.ToString().Contains("Postman"))
-context.Response.StatusCode = 404;
-else
-{
-string responseContent = ("Herhangi bir þey <b>bu yazý bold</b>");
+//app.MapGet("/", async (context) =>
+//{
+//if (context.Request.Headers.UserAgent.ToString().Contains("Postman"))
+//context.Response.StatusCode = 404;
+//else
+//{
+//string responseContent = ("Herhangi bir þey <b>bu yazý bold</b>");
 
-context.Response.StatusCode = 200;
-context.Response.ContentLength = Encoding.UTF8.GetByteCount(responseContent); //normal Lengt alamayýz çünkü karakter setlerindeki boyutlandýrma farklý.
-context.Response.ContentType = "text/plain ; charset=utf-8"; //"text/html ; charset=utf-8";
+//context.Response.StatusCode = 200;
+//context.Response.ContentLength = Encoding.UTF8.GetByteCount(responseContent); //normal Lengt alamayýz çünkü karakter setlerindeki boyutlandýrma farklý.
+//context.Response.ContentType = "text/plain ; charset=utf-8"; //"text/html ; charset=utf-8";
 
-await context.Response.WriteAsync(responseContent);
-}
-}); 
+//await context.Response.WriteAsync(responseContent);
+//}
+//}); 
 #endregion
 
 #region Burasý fiziksel css dosyasý istemediðimde bir baþka projenin cshtml sayfalarýna url linki vererek yaptýðým deðiþiklikler.
-app.MapGet("/{cssFileName}", async (HttpContext context, string cssFileName) =>
-{
-string cssContent = "";
+//app.MapGet("/{cssFileName}", async (HttpContext context, string cssFileName) =>
+//{
+//string cssContent = "";
 
-switch (cssFileName)
-{
-case "user.css":
-    cssContent = @"p { color: red; font-size: 8px }";
-    break;
-case "main.css":
-    cssContent = @"p { color: blue; font-size: 24px }";
-    break;
-case "index.css":
-    cssContent = @"p { color: yellow; font-size: 48px }";
-    break;
-}
+//switch (cssFileName)
+//{
+//case "user.css":
+//    cssContent = @"p { color: red; font-size: 8px }";
+//    break;
+//case "main.css":
+//    cssContent = @"p { color: blue; font-size: 24px }";
+//    break;
+//case "index.css":
+//    cssContent = @"p { color: yellow; font-size: 48px }";
+//    break;
+//}
 
-context.Response.StatusCode = 200;
-context.Response.ContentLength = Encoding.UTF8.GetByteCount(cssContent);
-context.Response.ContentType = "text/css; charset=utf-8";
+//context.Response.StatusCode = 200;
+//context.Response.ContentLength = Encoding.UTF8.GetByteCount(cssContent);
+//context.Response.ContentType = "text/css; charset=utf-8";
 
-await context.Response.WriteAsync(cssContent);
+//await context.Response.WriteAsync(cssContent);
 
-}); 
+//}); 
 #endregion
 #region Car CRUD Operations
 
