@@ -54,7 +54,7 @@ namespace RentAndSell.Car.API.Controllers
 
             _dbContext.SaveChanges();
 
-            return Created();
+            return Ok($"Kayıt başarıyla yapıldı. Kayıt No : {car.Id}");
         }
         [HttpPut("{id}")]
         public ActionResult Put(int id, Araba car)

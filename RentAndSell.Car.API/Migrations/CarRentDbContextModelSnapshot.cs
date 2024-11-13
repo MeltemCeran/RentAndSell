@@ -67,7 +67,7 @@ namespace RentAndSell.Car.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Arabalar");
+                    b.ToTable("Arabalar", (string)null);
                 });
 
             modelBuilder.Entity("RentAndSell.Car.API.Data.Entities.Concrete.ArabaTarihce", b =>
@@ -124,7 +124,7 @@ namespace RentAndSell.Car.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ArabaTarihcesi");
+                    b.ToTable("ArabaTarihcesi", (string)null);
                 });
 #pragma warning restore 612, 618
         }
