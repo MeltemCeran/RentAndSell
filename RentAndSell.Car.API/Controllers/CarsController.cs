@@ -35,6 +35,23 @@ namespace RentAndSell.Car.API.Controllers
         public ActionResult Post(Araba car)
         {
             _dbContext.Arabalar.Add(car);
+
+            //ArabaTarihce arabaTarihce = new ArabaTarihce();
+            //arabaTarihce.ArabaId = car.Id;
+            //arabaTarihce.Marka = car.Marka;
+            //arabaTarihce.Model = car.Model;
+            //arabaTarihce.Yili = car.Yili;
+            //arabaTarihce.YakitTuru = car.YakitTuru;
+            //arabaTarihce.SanzimanTipi = car.SanzimanTipi;
+            //arabaTarihce.MotorTipi = car.MotorTipi;
+            //arabaTarihce.IsActive = car.IsActive;
+            //arabaTarihce.IsDeleted = car.IsDeleted;
+            //arabaTarihce.IslemTipi = IslemTipi.Inserted;
+            //arabaTarihce.IslemZamani = DateTime.Now;
+
+            //_dbContext.ArabaTarihcesi.Add(arabaTarihce);
+            //bu kısımda işlem kayıtları tutmak istiyoruz ve böyle kodla yapmak yerine sqlde trigger yaptık
+
             _dbContext.SaveChanges();
 
             return Created();
@@ -84,7 +101,7 @@ namespace RentAndSell.Car.API.Controllers
 
         //Burada IActionResult kullanmamızın nedeni viewlerimizin olmamasından ötürü.
         [HttpGet("Year/{year:range(1980,2024)}")]
-        public ActionResult GetYear(int year)
+        public ActionResult Filter(int year)
         {
             return Ok(_activeAndNotDeletedCars.AsNoTracking()
                                               .Where(a=>a.Yili == year)
