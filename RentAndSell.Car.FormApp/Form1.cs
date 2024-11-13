@@ -71,6 +71,7 @@ namespace RentAndSell.Car.FormApp
             List<ArabaViewModel> arabaViewModels = _httpClient.GetFromJsonAsync<List<ArabaViewModel>>(_endPoint).Result;
 
             dgvArabaList.DataSource = arabaViewModels;
+            ClearForm();
         }
 
         private void dgvArabaList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -86,6 +87,86 @@ namespace RentAndSell.Car.FormApp
             cBoxYakitTuru.SelectedItem = selectedAraba.YakitTuru;
             cBoxMotorTipi.SelectedItem = selectedAraba.MotorTipi;
             cBoxSanzimanTipi.SelectedItem = selectedAraba.SanzimanTipi;
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            ArabaViewModel model = new ArabaViewModel();
+
+            model.Marka = txtMarka.Text;
+            model.Model = txtModel.Text;
+            model.Yili = (short)cBoxYil.SelectedItem;
+            model.YakitTuru = (YakitTuru)cBoxYakitTuru.SelectedItem;
+            model.MotorTipi = (MotorTipi)cBoxMotorTipi.SelectedItem;
+            model.SanzimanTipi = (SanzimanTipi)cBoxSanzimanTipi.SelectedItem;
+
+            string id = txtId.Text;
+
+            //https://localhost:7168/api/Cars/3 => Put id geliyor
+
+            HttpResponseMessage responseMessage = _httpClient.PutAsJsonAsync(_endPoint + $"/{id}", model).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Güncelleme baþarýlýdýr. Yanýt : " + responseMessage.Content.ReadAsStringAsync().Result);
+                ReloadedDataGridView();
+            }
+            else
+            {
+                MessageBox.Show("Güncelleme Yapýlamadý :(");
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            string id = txtId.Text;
+
+            //https://localhost:7168/api/Cars/3 => Delete id geliyor
+
+            HttpResponseMessage responseMessage = _httpClient.DeleteAsync(_endPoint + $"/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Silme iþlemi baþarýlýdýr. Yanýt : " + responseMessage.Content.ReadAsStringAsync().Result);
+                ReloadedDataGridView();
+            }
+            else
+            {
+                MessageBox.Show("Silme iþlemi Yapýlamadý :(");
+            }
+        }
+        private void ClearForm()
+        {
+            txtId.Clear();
+            txtMarka.Clear();
+            txtModel.Clear();
+            cBoxYil.SelectedIndex = 0;
+            cBoxMotorTipi.SelectedIndex = 0;
+            cBoxYakitTuru.SelectedIndex = 0;
+            cBoxSanzimanTipi.SelectedIndex = 0;
+
+        }
+
+        private void btnRead_Click(object sender, EventArgs e)
+        {
+            //burasý dbden orijinal kaydý okumak için geçerli ve bu sanýrým daha saðlýklý. Çünkü dgvden seçtiðimiz kayýt henüz dbden yenilenmemiþ kayýt olabilir.
+            string carId = txtcarId.Text;
+
+            ArabaViewModel model = _httpClient.GetFromJsonAsync<ArabaViewModel>(_endPoint + $"/{carId}").Result;
+            if (model!= null)
+            {
+                string metin = $@"
+                                Marka : {model.Marka},
+                                Model : {model.Model},
+                                Yili : {model.Yili},
+                                Yakýt Türü : {model.YakitTuru},
+                                Motor Tipi : {model.MotorTipi},
+                                Þanzýman Tipi : {model.SanzimanTipi},
+                                ";
+                MessageBox.Show(metin);
+            }
+            else
+            {
+                MessageBox.Show("Silme iþlemi Yapýlamadý :(");
+            }
         }
     }
 }

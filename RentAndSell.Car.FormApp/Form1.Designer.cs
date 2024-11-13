@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
+            txtId = new TextBox();
             btnDelete = new Button();
             btnUpdate = new Button();
             cBoxYil = new ComboBox();
@@ -50,7 +51,8 @@
             sanzimanTipiDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             yiliDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             arabaViewModelBindingSource = new BindingSource(components);
-            txtId = new TextBox();
+            txtcarId = new TextBox();
+            btnRead = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nbrUpDownYil).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvArabaList).BeginInit();
@@ -59,6 +61,8 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btnRead);
+            groupBox1.Controls.Add(txtcarId);
             groupBox1.Controls.Add(txtId);
             groupBox1.Controls.Add(btnDelete);
             groupBox1.Controls.Add(btnUpdate);
@@ -76,6 +80,14 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Yeni Kayıt";
             // 
+            // txtId
+            // 
+            txtId.Location = new Point(18, 256);
+            txtId.Name = "txtId";
+            txtId.PlaceholderText = "Record ID";
+            txtId.Size = new Size(113, 23);
+            txtId.TabIndex = 11;
+            // 
             // btnDelete
             // 
             btnDelete.Location = new Point(179, 227);
@@ -84,6 +96,7 @@
             btnDelete.TabIndex = 10;
             btnDelete.Text = "Sil";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnUpdate
             // 
@@ -93,6 +106,7 @@
             btnUpdate.TabIndex = 9;
             btnUpdate.Text = "Güncelle";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // cBoxYil
             // 
@@ -240,14 +254,23 @@
             // 
             arabaViewModelBindingSource.DataSource = typeof(Models.ArabaViewModel);
             // 
-            // txtId
+            // txtcarId
             // 
-            txtId.Location = new Point(18, 256);
-            txtId.Name = "txtId";
-            txtId.PlaceholderText = "Record ID";
-            txtId.Size = new Size(113, 23);
-            txtId.TabIndex = 11;
-            txtId.Visible = false;
+            txtcarId.Location = new Point(17, 285);
+            txtcarId.Name = "txtcarId";
+            txtcarId.PlaceholderText = "Car Id";
+            txtcarId.Size = new Size(114, 23);
+            txtcarId.TabIndex = 12;
+            // 
+            // btnRead
+            // 
+            btnRead.Location = new Point(169, 284);
+            btnRead.Name = "btnRead";
+            btnRead.Size = new Size(75, 23);
+            btnRead.TabIndex = 13;
+            btnRead.Text = "Oku";
+            btnRead.UseVisualStyleBackColor = true;
+            btnRead.Click += btnRead_Click;
             // 
             // Form1
             // 
@@ -294,5 +317,7 @@
         private DataGridViewTextBoxColumn sanzimanTipiDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn yiliDataGridViewTextBoxColumn;
         private TextBox txtId;
+        private Button btnRead;
+        private TextBox txtcarId;
     }
 }

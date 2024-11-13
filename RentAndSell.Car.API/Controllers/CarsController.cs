@@ -83,7 +83,7 @@ namespace RentAndSell.Car.API.Controllers
             return StatusCode(503, "Güncelleme İşlemi yapılamadı");
         }
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id, Araba car)
+        public ActionResult Delete(int id)
         {
             Araba? readAraba = _activeAndNotDeletedCars.AsNoTracking()
                                                  .Where(a => a.Id == id)
