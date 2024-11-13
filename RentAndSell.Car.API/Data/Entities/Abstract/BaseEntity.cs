@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
-        public DateTime? Update { get; set; }
-        public DateTime? Delete { get; set; }
+        public DateTime? Updated { get; set; }
+        public DateTime? Deleted { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; } = true;
     }
