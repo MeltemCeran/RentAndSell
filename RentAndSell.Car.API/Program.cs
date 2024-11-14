@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RentAndSell.Car.API;
 using RentAndSell.Car.API.Data.Context;
+using RentAndSell.Car.API.Data.Entities.Concrete;
 using RentAndSell.Car.API.Services;
 using System.Text;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<CarRentDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("CarRentDbCon"));
 });
+
+builder.Services.AddIdentity<Kullanici,IdentityRole>()
+                .AddEntityFrameworkStores<CarRentDbContext>();
 
 builder.Services.AddControllers(); //MVC de addcontrollerswithviews yapýyoruz.
 
