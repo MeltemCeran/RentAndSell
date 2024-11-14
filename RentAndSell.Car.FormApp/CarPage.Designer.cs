@@ -1,6 +1,6 @@
 ﻿namespace RentAndSell.Car.FormApp
 {
-    partial class Form1
+    partial class CarPage
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,6 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
+            btnRead = new Button();
+            txtcarId = new TextBox();
             txtId = new TextBox();
             btnDelete = new Button();
             btnUpdate = new Button();
@@ -51,8 +53,6 @@
             sanzimanTipiDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             yiliDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             arabaViewModelBindingSource = new BindingSource(components);
-            txtcarId = new TextBox();
-            btnRead = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nbrUpDownYil).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvArabaList).BeginInit();
@@ -79,6 +79,24 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Yeni Kayıt";
+            // 
+            // btnRead
+            // 
+            btnRead.Location = new Point(169, 284);
+            btnRead.Name = "btnRead";
+            btnRead.Size = new Size(75, 23);
+            btnRead.TabIndex = 13;
+            btnRead.Text = "Oku";
+            btnRead.UseVisualStyleBackColor = true;
+            btnRead.Click += btnRead_Click;
+            // 
+            // txtcarId
+            // 
+            txtcarId.Location = new Point(17, 285);
+            txtcarId.Name = "txtcarId";
+            txtcarId.PlaceholderText = "Car Id";
+            txtcarId.Size = new Size(114, 23);
+            txtcarId.TabIndex = 12;
             // 
             // txtId
             // 
@@ -254,25 +272,7 @@
             // 
             arabaViewModelBindingSource.DataSource = typeof(Models.ArabaViewModel);
             // 
-            // txtcarId
-            // 
-            txtcarId.Location = new Point(17, 285);
-            txtcarId.Name = "txtcarId";
-            txtcarId.PlaceholderText = "Car Id";
-            txtcarId.Size = new Size(114, 23);
-            txtcarId.TabIndex = 12;
-            // 
-            // btnRead
-            // 
-            btnRead.Location = new Point(169, 284);
-            btnRead.Name = "btnRead";
-            btnRead.Size = new Size(75, 23);
-            btnRead.TabIndex = 13;
-            btnRead.Text = "Oku";
-            btnRead.UseVisualStyleBackColor = true;
-            btnRead.Click += btnRead_Click;
-            // 
-            // Form1
+            // CarPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -281,7 +281,7 @@
             Controls.Add(nbrUpDownYil);
             Controls.Add(groupBox1);
             Controls.Add(txtYili);
-            Name = "Form1";
+            Name = "CarPage";
             Text = "Form1";
             Load += Form1_Load;
             groupBox1.ResumeLayout(false);
