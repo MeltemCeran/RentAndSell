@@ -11,7 +11,16 @@ using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMe
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.
-builder.Services.AddAuthentication("YetkiKontrol").AddScheme<AuthenticationSchemeOptions,YetkiKontrolYakalayicisi>("YetkiKontrol",null);
+builder.Services.AddAuthentication(opt=>
+                {
+                    opt.DefaultScheme = "YetkiKontrol";
+                    opt.DefaultChallengeScheme = "YetkiKontrol";
+                    opt.DefaultAuthenticateScheme = "YetkiKontrol";
+                    opt.DefaultForbidScheme = "YetkiKontrol";
+                    opt.DefaultSignInScheme = "YetkiKontrol";
+                    opt.DefaultSignOutScheme = "YetkiKontrol";
+                })
+                .AddScheme<AuthenticationSchemeOptions,YetkiKontrolYakalayicisi>("YetkiKontrol",null);
 
 builder.Services.AddDbContext<CarRentDbContext>(opt =>
 {
@@ -25,6 +34,15 @@ builder.Services.AddControllers(); //MVC de addcontrollerswithviews yapýyoruz.
 
 builder.Services.ConfigureApplicationCookie(opt =>
 {
+    //opt.Cookie = new CookieBuilder()
+    //{
+    //    Name = "YetkiKontrol",
+    //    //HttpOnly = false,
+    //    //SameSite = SameSiteMode.Lax,
+    //    //SecurePolicy = CookieSecurePolicy.Always
+    //    //bunlar ek ayarlar istersek yapabiliyoruz.
+    //};
+
     opt.Events.OnRedirectToLogin = (context) =>
     {
         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
