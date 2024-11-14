@@ -8,7 +8,7 @@ using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMe
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Add services to the container.
 builder.Services.AddAuthentication("YetkiKontrol").AddScheme<AuthenticationSchemeOptions,YetkiKontrolYakalayicisi>("YetkiKontrol",null);
 
 builder.Services.AddDbContext<CarRentDbContext>(opt =>
