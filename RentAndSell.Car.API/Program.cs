@@ -23,6 +23,23 @@ builder.Services.AddIdentity<Kullanici,IdentityRole>()
 
 builder.Services.AddControllers(); //MVC de addcontrollerswithviews yapýyoruz.
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.Events.OnRedirectToLogin = (context) =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+        return Task.CompletedTask;
+    };
+
+    opt.Events.OnRedirectToAccessDenied = (context) =>
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+
+        return Task.CompletedTask;
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
