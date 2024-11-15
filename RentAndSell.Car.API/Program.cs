@@ -15,6 +15,7 @@ using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMe
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Service ekleme sýralamasýnda önce db sonra identity sonra authentication
 // Add services to the container.
 builder.Services.AddDbContext<CarRentDbContext>(opt =>
 {
@@ -46,7 +47,11 @@ builder.Services.AddIdentity<Kullanici, IdentityRole>()
 #endregion
 
 #region JWT Authentication Kodlarý
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(opt =>
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
@@ -60,20 +65,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateLifetime = true,
                     };
                 });
-builder.Services.ConfigureApplicationCookie(opt =>
-{
-                opt.Events.OnRedirectToLogin = (context) =>
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    return Task.CompletedTask;
-                };
-                
-                opt.Events.OnRedirectToAccessDenied = (context) =>
-                {
-                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    return Task.CompletedTask;
-                };
-});
 #endregion
 
 builder.Services.AddControllers();

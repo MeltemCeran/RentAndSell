@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using RentAndSell.Car.WebApp.Models;
 
@@ -9,12 +11,18 @@ namespace RentAndSell.Car.WebApp.Controllers
     public class ArabaController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private const string _endPoint = "Cars";
 
-        public ArabaController(HttpClient httpClient)
+        public ArabaController(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
+
+            string token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
             _httpClient.BaseAddress = new Uri("https://localhost:7168/api/");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         // GET: ArabaController
