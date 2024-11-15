@@ -34,7 +34,7 @@ namespace RentAndSell.Car.API.Controllers
             return Ok(_activeAndNotDeletedCars.Where(a => a.Id == id).SingleOrDefault());
         }
         [HttpPost]
-        public ActionResult Post(Araba car)
+        public ActionResult Post([FromBody]Araba car)
         {
             _dbContext.Arabalar.Add(car);
 

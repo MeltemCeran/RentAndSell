@@ -67,6 +67,14 @@ builder.Services.AddAuthentication(opt =>
                 });
 #endregion
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddDefaultPolicy(p =>
+    {
+        p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(opt =>
@@ -112,6 +120,7 @@ app.UseSwaggerUI(s =>
 {
     s.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger");
 });
+app.UseCors();
 app.MapControllers();
 
 // GET | POST | PUT | PATCH | DELETE | OPTIONS

@@ -13,16 +13,17 @@ namespace RentAndSell.Car.WebApp.Controllers
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private const string _endPoint = "Cars";
+        private readonly string _token;
 
         public ArabaController(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
 
-            string token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            _token = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             _httpClient.BaseAddress = new Uri("https://localhost:7168/api/");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
         // GET: ArabaController
@@ -42,6 +43,9 @@ namespace RentAndSell.Car.WebApp.Controllers
         // GET: ArabaController/Create
         public ActionResult Create()
         {
+            ArabaViewModel model = new ArabaViewModel();
+
+            ViewBag.Token = _token;
             return View();
         }
 
